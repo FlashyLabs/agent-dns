@@ -409,7 +409,7 @@ describe('resolve', () => {
   });
 
   test('follows exactly one redirect within the same domain', async () => {
-    const moved = 'https://agents.example.com/agent.json';
+    const moved = 'https://agents.example.com/.well-known/agent';
     const t = transports({
       txt: { [NAME]: [GOOD] },
       docs: { [DOC_URL]: { status: 302, headers: { Location: moved } }, [moved]: jsonResponse(document) },
@@ -554,10 +554,19 @@ describe('repository', () => {
     assert.equal(pkg.engines.node, '>=22');
   });
 
-  test('the resolver imports node: builtins only', () => {
+  test('the resolver imports node: builtins and its one sibling, vendor-domain.mjs, and nothing else', () => {
     const src = readFileSync(CLI, 'utf8');
-    for (const m of src.matchAll(/^import\b[^'"\n]*?from\s+['"]([^'"]+)['"]/gm)) {
-      assert.ok(m[1].startsWith('node:'), m[1]);
+    const specifiers = [...src.matchAll(/^(?:import|export)\b[^'"\n]*?from\s+['"]([^'"]+)['"]/gm)].map((m) => m[1]);
+    for (const s of specifiers) {
+      assert.ok(s.startsWith('node:') || s === './vendor-domain.mjs', s);
     }
+    assert.ok(specifiers.includes('./vendor-domain.mjs'), 'the domain rule is imported, not restated');
+    assert.doesNotMatch(src, /^export function (isSameDomain|normalizeDomain)\b/m, 'the domain rule is defined once, in vendor-domain.mjs');
+  });
+
+  test('vendor-domain.mjs imports nothing at all — it must run in a pure module and a browser', () => {
+    const src = readFileSync(join(ROOT, 'vendor-domain.mjs'), 'utf8');
+    assert.doesNotMatch(src, /^\s*import\b/m);
+    assert.doesNotMatch(src, /\brequire\s*\(/);
   });
 });

@@ -6,12 +6,18 @@
 // was found under, and resolves a domain to one of four findings that are
 // never collapsed into each other: ok, absent, unreachable, invalid.
 //
-// Dependency-free: node: builtins only. No live DNS or network happens here —
-// the resolver takes an injected `lookupTxt` and an injected `fetcher`.
+// Dependency-free: node: builtins, plus the same-domain rule from the sibling
+// `vendor-domain.mjs` (canonical here; vendored byte-identically elsewhere).
+// No live DNS or network happens here — the resolver takes an injected
+// `lookupTxt` and an injected `fetcher`.
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, resolve as resolvePath } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import { isSameDomain, normalizeDomain } from './vendor-domain.mjs';
+
+export { isSameDomain, normalizeDomain, sameDomainUrl } from './vendor-domain.mjs';
 
 export const CONTRACT = 'agent-dns/1';
 export const VERSION_TOKEN = 'agent1';
@@ -45,14 +51,8 @@ function messageOf(e) {
 }
 
 // ---------------------------------------------------------------------------
-// Hostnames
-
-export function normalizeDomain(input) {
-  if (typeof input !== 'string') return null;
-  let d = input.trim().toLowerCase();
-  if (d.endsWith('.')) d = d.slice(0, -1);
-  return d;
-}
+// Hostnames — `normalizeDomain` and `isSameDomain` live in ./vendor-domain.mjs
+// and are re-exported above, so a consumer of this file sees the same API.
 
 /**
  * A valid hostname for agent-dns/1: ASCII (IDNA-encode first), at least two
@@ -74,19 +74,13 @@ export function recordName(domain) {
   return `${RECORD_LABEL}.${normalizeDomain(domain)}`;
 }
 
-/**
- * The same-domain rule of version 1: `host` is `domain` itself or a subdomain
- * of it. This is deliberately narrower than "same registrable domain": without
- * a Public Suffix List the resolver cannot tell `co.uk` from `example.com`, and
- * guessing would let `a.co.uk` point at `b.co.uk`. A parent or sibling host is
- * refused; the record's owner can always publish under the domain it names.
- */
-export function isSameDomain(host, domain) {
-  const h = normalizeDomain(host);
-  const d = normalizeDomain(domain);
-  if (!h || !d) return false;
-  return h === d || h.endsWith(`.${d}`);
-}
+// The same-domain rule of version 1 — `isSameDomain(host, domain)`: `host` is
+// `domain` itself or a subdomain of it. Deliberately narrower than "same
+// registrable domain": without a Public Suffix List the resolver cannot tell
+// `co.uk` from `example.com`, and guessing would let `a.co.uk` point at
+// `b.co.uk`. A parent or sibling host is refused; the record's owner can
+// always publish under the domain it names. The implementation is
+// ./vendor-domain.mjs, shared byte-identically with the sibling specifications.
 
 // ---------------------------------------------------------------------------
 // Record grammar

@@ -48,6 +48,12 @@ That snippet is not exercised by the tests, because they have no network; the co
 
 **Same domain only.** The url must be https and its host must be `<domain>` or a subdomain of it. A record may not point a domain at another company's document. Version 1 carries no Public Suffix List, so it does not try to compute "registrable domain" and guess whether `co.uk` is a suffix; it refuses parents and siblings as well as strangers. The narrower rule costs nothing a publisher cannot fix by publishing under the domain the url names.
 
+## The domain rule is canonical here
+
+`vendor-domain.mjs` is the whole of the same-domain rule — `normalizeDomain(host)`, `isSameDomain(host, domain)` and `sameDomainUrl(fromUrl, toUrl)` — with no imports at all, and `test/domain.test.mjs` pins it case by case. It is canonical in this repository and vendored **byte-identically** into `agent-wellknown`, `bastion` and `flashy-examples`, each of which carries a drift test against this copy. Re-vendor; never edit the copies.
+
+It exists because the estate had three implementations of "same domain" in specifications built to interoperate, and two of them sliced the last two labels of a hostname — a rule that reads `acme.co.uk` and `other.co.uk` as one publisher. The rule kept is this one: host equals `<domain>` or is a subdomain of it, case-insensitive, trailing dot ignored, and no guessing at suffixes. The one well-known path the document lives at is `/.well-known/agent`, and only that.
+
 **Four findings, never collapsed.** A resolver reports `ok`, `absent`, `unreachable` or `invalid`, and a consumer can tell them apart every time. `unreachable` is a fact about the resolver's connectivity and is never evidence that the domain has no agent; a test enumerates six failure shapes and asserts none of them reads `absent`.
 
 **Null is never zero.** A lookup that throws, a fetch that times out, a 5xx from the document host — each is `unreachable` with a reason, not an empty result. The only thing that reads `absent` is an actual answer saying there is nothing there: no TXT record, or a 404/410 for the document.
@@ -60,9 +66,11 @@ That snippet is not exercised by the tests, because they have no network; the co
 |---|---|
 | `SPEC.md` | The specification: grammar, resolution algorithm, findings, refusals, security considerations, what v1 does not carry |
 | `schema/agent-dns-1.json` | JSON Schema (draft 2020-12) for the parsed record object |
-| `vendor-agent-dns.mjs` | Reference implementation and CLI: `parseRecord`, `validateRecord`, `selectRecord`, `resolve`, `checkVector`; `node:` builtins only |
+| `vendor-agent-dns.mjs` | Reference implementation and CLI: `parseRecord`, `validateRecord`, `selectRecord`, `resolve`, `checkVector`; `node:` builtins plus `./vendor-domain.mjs`, nothing else |
+| `vendor-domain.mjs` | The same-domain rule, canonical here and vendored byte-identically elsewhere: `normalizeDomain`, `isSameDomain`, `sameDomainUrl`; no imports at all |
 | `vectors/` | Twenty test vectors, `{contract, domain, records, expect}` — five valid, two absent, thirteen invalid |
 | `test/agent-dns.test.mjs` | `node --test` suite: vectors, parser, validator, resolver with injected transports, CLI, repository rules |
+| `test/domain.test.mjs` | The same-domain rule pinned case by case: equal, subdomain, parent, sibling, `co.uk` neighbours, case, trailing dot, non-https, unparsable |
 | `tools/lint.mjs` | Zero-install lint: `node --check` on every `.mjs`, `node:`-only imports, no dependencies, no LICENSE file, licence line, credential shapes |
 | `CLAUDE.md` | Working notes for agents and people: what is different here and which rules a test holds |
 

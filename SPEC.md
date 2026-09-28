@@ -56,9 +56,11 @@ The `url` MUST:
 - carry no userinfo (no `user:pass@`);
 - have a host that is `<domain>` itself or a subdomain of `<domain>`.
 
-The last rule is the **same-domain rule**. A record may not point a domain at a document on another domain — `_agent.example.com` may not name `https://example.net/…`, and it may not name `https://example.com/…` if the record is for `shop.example.com` either. Version 1 defines "same domain" as *host equals `<domain>` or ends with `.<domain>`*; it does not compute a registrable domain, because doing so needs a Public Suffix List and a resolver without one would have to guess whether `co.uk` is a suffix (§7). The rule is strictly narrower than "same registrable domain": everything it admits, a PSL-based rule would admit too.
+The last rule is the **same-domain rule**. A record may not point a domain at a document on another domain — `_agent.example.com` may not name `https://example.net/…`, and it may not name `https://example.com/…` if the record is for `shop.example.com` either. Version 1 defines "same domain" as *host equals `<domain>` or ends with `.<domain>`*, compared case-insensitively with a trailing dot ignored; it does not compute a registrable domain, because doing so needs a Public Suffix List and a resolver without one would have to guess whether `co.uk` is a suffix (§7). The rule is strictly narrower than "same registrable domain": everything it admits, a PSL-based rule would admit too.
 
-A port is permitted. A path, query and fragment are permitted; the conventional path is `/.well-known/agent`, and `agent/1` says what is served there.
+**The rule is canonical here and travels by copy.** `vendor-domain.mjs` in this repository is its one implementation — `normalizeDomain(host)`, `isSameDomain(host, domain)` and `sameDomainUrl(fromUrl, toUrl)`, the last true when both URLs parse, both are https and the target's host is the same domain as the source's — and `test/domain.test.mjs` pins it. It is vendored **byte-identically** into `agent-wellknown` (endpoints and redirects in `agent/1`), `bastion` (capability endpoints against the operator's origin) and `flashy-examples` (the reference consumer's one redirect), each of which carries a drift test against this copy. Re-vendor; never edit the copies. Before this file existed those specifications held three different rules for one question, two of them "last two labels" slices that read `acme.co.uk` and `other.co.uk` as one publisher.
+
+A port is permitted. A path, query and fragment are permitted; the conventional path is `/.well-known/agent` — that path only, with no `.json` alternate — and `agent/1` says what is served there.
 
 ### 2.5 Examples
 
