@@ -1,0 +1,12 @@
+{
+  "contract": "agent-dns/1",
+  "description": "v=agent1 must be the first pair.",
+  "domain": "example.com",
+  "records": [
+    "url=https://example.com/.well-known/agent; v=agent1"
+  ],
+  "expect": {
+    "state": "invalid",
+    "reason": "version-not-first"
+  }
+}

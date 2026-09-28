@@ -1,0 +1,12 @@
+{
+  "contract": "agent-dns/1",
+  "description": "A host that merely ends with the domain's characters is not a subdomain of it.",
+  "domain": "example.com",
+  "records": [
+    "v=agent1; url=https://notexample.com/.well-known/agent"
+  ],
+  "expect": {
+    "state": "invalid",
+    "reason": "url-cross-host"
+  }
+}

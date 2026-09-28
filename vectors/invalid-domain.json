@@ -1,0 +1,12 @@
+{
+  "contract": "agent-dns/1",
+  "description": "A <domain> that is not a valid hostname is refused before any lookup.",
+  "domain": "not a host",
+  "records": [
+    "v=agent1; url=https://example.com/.well-known/agent"
+  ],
+  "expect": {
+    "state": "invalid",
+    "reason": "invalid-domain"
+  }
+}

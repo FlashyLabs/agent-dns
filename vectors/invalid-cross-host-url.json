@@ -1,0 +1,12 @@
+{
+  "contract": "agent-dns/1",
+  "description": "A record may not point a domain at another domain's document.",
+  "domain": "example.com",
+  "records": [
+    "v=agent1; url=https://example.net/.well-known/agent"
+  ],
+  "expect": {
+    "state": "invalid",
+    "reason": "url-cross-host"
+  }
+}

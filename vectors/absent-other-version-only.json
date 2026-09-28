@@ -1,0 +1,12 @@
+{
+  "contract": "agent-dns/1",
+  "description": "Only a record of another version: absent for v1, and the reason says why.",
+  "domain": "example.com",
+  "records": [
+    "v=agent2; url=https://example.com/.well-known/agent2"
+  ],
+  "expect": {
+    "state": "absent",
+    "reason": "no-v1-record"
+  }
+}

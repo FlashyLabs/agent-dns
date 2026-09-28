@@ -1,0 +1,12 @@
+{
+  "contract": "agent-dns/1",
+  "description": "The url must be https.",
+  "domain": "example.com",
+  "records": [
+    "v=agent1; url=http://example.com/.well-known/agent"
+  ],
+  "expect": {
+    "state": "invalid",
+    "reason": "url-not-https"
+  }
+}

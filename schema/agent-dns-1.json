@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/agent-dns/1/record.schema.json",
+  "title": "agent-dns/1 parsed record",
+  "description": "The object produced by parsing one TXT record at _agent.<domain>. This schema covers shape only: the same-domain rule (url host is <domain> or a subdomain of it) depends on the domain the record was found under and is checked by validateRecord, not here.",
+  "type": "object",
+  "properties": {
+    "v": {
+      "const": "agent1",
+      "description": "The contract version token. Must be the first pair of the record."
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/?#@]+",
+      "description": "The https URL of the domain's agent/1 discovery document. No credentials. Must be on <domain> or a subdomain of it."
+    },
+    "org": {
+      "type": "string",
+      "pattern": "^org/[a-z0-9][a-z0-9-]*$",
+      "description": "Optional. The organisation the document belongs to, as org/<slug>."
+    }
+  },
+  "patternProperties": {
+    "^x-[a-z0-9][a-z0-9-]*$": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[\\x21-\\x3a\\x3c-\\x7e]+$",
+      "description": "Private extension keys. A resolver carries them through and never acts on them."
+    }
+  },
+  "required": ["v", "url"],
+  "additionalProperties": false
+}

@@ -1,0 +1,17 @@
+{
+  "contract": "agent-dns/1",
+  "description": "The optional org key names the organisation the document belongs to.",
+  "domain": "example.com",
+  "records": [
+    "v=agent1; url=https://example.com/.well-known/agent; org=org/example"
+  ],
+  "expect": {
+    "state": "ok",
+    "url": "https://example.com/.well-known/agent",
+    "record": {
+      "v": "agent1",
+      "url": "https://example.com/.well-known/agent",
+      "org": "org/example"
+    }
+  }
+}

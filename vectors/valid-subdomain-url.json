@@ -1,0 +1,12 @@
+{
+  "contract": "agent-dns/1",
+  "description": "The url may sit on a subdomain of <domain>; the document is still under the same domain.",
+  "domain": "example.com",
+  "records": [
+    "v=agent1; url=https://agents.example.com/.well-known/agent"
+  ],
+  "expect": {
+    "state": "ok",
+    "url": "https://agents.example.com/.well-known/agent"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@flashylabs/agent-dns",
+  "version": "0.1.0",
+  "private": true,
+  "description": "agent-dns/1 — domain → organisation → agent resolution via one DNS TXT record. Spec, schema, vectors and a dependency-free reference resolver.",
+  "type": "module",
+  "main": "./vendor-agent-dns.mjs",
+  "exports": "./vendor-agent-dns.mjs",
+  "bin": {
+    "agent-dns": "./vendor-agent-dns.mjs"
+  },
+  "scripts": {
+    "test": "node --test",
+    "lint": "node tools/lint.mjs",
+    "check": "node vendor-agent-dns.mjs check vectors"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

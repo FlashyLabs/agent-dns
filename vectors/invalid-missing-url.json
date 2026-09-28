@@ -1,0 +1,12 @@
+{
+  "contract": "agent-dns/1",
+  "description": "url is required.",
+  "domain": "example.com",
+  "records": [
+    "v=agent1; org=org/example"
+  ],
+  "expect": {
+    "state": "invalid",
+    "reason": "missing-url"
+  }
+}

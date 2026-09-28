@@ -1,0 +1,12 @@
+{
+  "contract": "agent-dns/1",
+  "description": "A key may not repeat inside one record.",
+  "domain": "example.com",
+  "records": [
+    "v=agent1; url=https://example.com/.well-known/agent; url=https://example.com/other"
+  ],
+  "expect": {
+    "state": "invalid",
+    "reason": "duplicate-key"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "contract": "agent-dns/1",
+  "description": "A record of another version at the same name is ignored by a v1 resolver; the v1 record still resolves.",
+  "domain": "example.com",
+  "records": [
+    "v=agent2; url=https://example.com/.well-known/agent2",
+    "v=agent1; url=https://example.com/.well-known/agent"
+  ],
+  "expect": {
+    "state": "ok",
+    "url": "https://example.com/.well-known/agent"
+  }
+}

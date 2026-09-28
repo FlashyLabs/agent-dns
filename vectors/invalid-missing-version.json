@@ -1,0 +1,12 @@
+{
+  "contract": "agent-dns/1",
+  "description": "A record at _agent.<domain> with no v= pair is malformed, not another version.",
+  "domain": "example.com",
+  "records": [
+    "url=https://example.com/.well-known/agent"
+  ],
+  "expect": {
+    "state": "invalid",
+    "reason": "missing-version"
+  }
+}

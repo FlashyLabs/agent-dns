@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report
+    url: https://github.com/FlashyLabs/agent-dns/blob/main/SECURITY.md
+    about: A resolver that fetches off-domain, accepts http, over-reads, hangs, or reports unreachable as absent is a security problem. Report it privately, never as an issue.

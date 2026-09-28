@@ -1,0 +1,10 @@
+{
+  "contract": "agent-dns/1",
+  "description": "No TXT records at _agent.<domain>: absent, with nothing guessed.",
+  "domain": "example.com",
+  "records": [],
+  "expect": {
+    "state": "absent",
+    "reason": "no-record"
+  }
+}

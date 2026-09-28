@@ -1,0 +1,12 @@
+{
+  "contract": "agent-dns/1",
+  "description": "Version 1 has no Public Suffix List, so a parent host is refused too: publish the record under the domain the url names.",
+  "domain": "shop.example.com",
+  "records": [
+    "v=agent1; url=https://example.com/.well-known/agent"
+  ],
+  "expect": {
+    "state": "invalid",
+    "reason": "url-cross-host"
+  }
+}

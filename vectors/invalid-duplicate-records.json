@@ -1,0 +1,13 @@
+{
+  "contract": "agent-dns/1",
+  "description": "Two v=agent1 records: ambiguity is refused, never guessed.",
+  "domain": "example.com",
+  "records": [
+    "v=agent1; url=https://example.com/.well-known/agent",
+    "v=agent1; url=https://agents.example.com/.well-known/agent"
+  ],
+  "expect": {
+    "state": "invalid",
+    "reason": "duplicate-records"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "contract": "agent-dns/1",
+  "description": "One record, version and url only.",
+  "domain": "example.com",
+  "records": [
+    "v=agent1; url=https://example.com/.well-known/agent"
+  ],
+  "expect": {
+    "state": "ok",
+    "url": "https://example.com/.well-known/agent",
+    "record": {
+      "v": "agent1",
+      "url": "https://example.com/.well-known/agent"
+    }
+  }
+}

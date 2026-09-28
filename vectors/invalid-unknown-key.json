@@ -1,0 +1,12 @@
+{
+  "contract": "agent-dns/1",
+  "description": "A key the contract does not name is refused unless it starts with x-.",
+  "domain": "example.com",
+  "records": [
+    "v=agent1; url=https://example.com/.well-known/agent; capability=chat"
+  ],
+  "expect": {
+    "state": "invalid",
+    "reason": "unknown-key"
+  }
+}
