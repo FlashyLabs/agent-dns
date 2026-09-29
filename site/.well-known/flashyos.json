@@ -1,0 +1,14 @@
+{
+  "mesh": "flashyos/1",
+  "org": {
+    "slug": "agent-dns",
+    "name": "Agent Dns",
+    "profile": "https://app.flashyos.com/org/agent-dns"
+  },
+  "capabilities": [
+    "content-exchange"
+  ],
+  "wants": "https://api.flashyos.com/api/v1/network/roadmap",
+  "api": "https://api.flashyos.com",
+  "join": "https://flashyos.com/join"
+}

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://flashylabs.github.io/agent-dns/sitemap.xml

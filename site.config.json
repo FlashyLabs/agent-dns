@@ -1,0 +1,62 @@
+{
+  "property": "agent-dns",
+  "domain": null,
+  "title": "agent-dns/1 — from a domain name to its agents",
+  "pitch": "agent-dns/1 is a vendor-neutral way for a domain to say where its agents are described — one DNS TXT record at _agent.<domain> pointing at the domain's agent/1 discovery document.",
+  "layer": "gateway",
+  "contract": "agent-dns/1",
+  "accent": "--flashy-mint",
+  "refusals": [
+    {
+      "title": "One record",
+      "body": "A domain has exactly one v=agent1 record at _agent.<domain>. Two is refused as duplicate-records — ambiguity is refused, never resolved by picking the first. Records of other versions at the same name are ignored, so a future agent2 can coexist with this one."
+    },
+    {
+      "title": "One url, and nothing else in DNS",
+      "body": "The record carries a version, a url, an optional org, and nothing else. No capabilities, no keys, no endpoints in DNS. DNS points; the document describes."
+    },
+    {
+      "title": "Same domain only",
+      "body": "The url must be https and its host must be the domain or a subdomain of it. Version 1 carries no Public Suffix List, so it does not guess whether co.uk is a suffix; it refuses parents and siblings as well as strangers. The narrower rule costs nothing a publisher cannot fix by publishing under the domain the url names."
+    },
+    {
+      "title": "Four findings, never collapsed; null is never zero",
+      "body": "A resolver reports ok, absent, unreachable or invalid and never anything else. unreachable is a fact about the resolver's connectivity, never evidence that a domain has no agent; only an actual answer of nothing — no record, or a 404/410 — reads absent."
+    },
+    {
+      "title": "Refuse, don't guess",
+      "body": "A non-https url, a cross-host url, a missing v=agent1, a missing url, an unknown key without x-, a repeated key, or a domain that is not a hostname is each invalid with a stable reason code, and each has a vector."
+    }
+  ],
+  "faq": [
+    {
+      "q": "What does the checker refuse?",
+      "a": "A non-https or cross-host url; a record missing v=agent1 or url; a key the contract does not name unless x- prefixed; a repeated key; more than one v=agent1 record; and a domain that is not a hostname. Each is invalid with a stable reason code, and each has a vector that names it."
+    },
+    {
+      "q": "Where does this sit in Web 4?",
+      "a": "The gateway layer — 'how do I connect to the old web?'. DNS bootstrapped the web by turning a name into an address; agent-dns/1 does the same for the agentic internet — the name is the domain, the address is one https URL, and everything else lives in the agent/1 document it points at. The stack page and the Web 4 hub show where it sits among the nine layers."
+    },
+    {
+      "q": "Is this a standard yet?",
+      "a": "No. agent-dns/1 is draft. Nothing here is deployed, adopted or measured; the vectors and tests are the whole of the evidence, and the grammar, algorithm and reason codes may change until the first independent implementation agrees with them."
+    },
+    {
+      "q": "Why only one record and one url?",
+      "a": "Because ambiguity is refused, not resolved. Two v=agent1 records is duplicate-records; the record carries a version, a url and an optional org and nothing else. DNS points to exactly one document; the document describes everything else."
+    },
+    {
+      "q": "Why refuse a parent or sibling domain?",
+      "a": "Because there is no Public Suffix List here and version 1 will not guess one. Host must equal the domain or be a subdomain of it — so acme.co.uk and other.co.uk are never read as one publisher. A rule stated by guessing is guessed wrong at least once."
+    },
+    {
+      "q": "Does this repository touch the network?",
+      "a": "No. resolve() takes an injected lookupTxt and fetcher, and every test uses in-memory maps. The one snippet that wires node:dns/promises and fetch lives in the README and is labelled as not exercised by the tests."
+    }
+  ],
+  "links": {
+    "hub": "https://github.com/FlashyLabs/web4",
+    "spec": "https://github.com/FlashyLabs/agent-dns",
+    "repo": "https://github.com/FlashyLabs/agent-dns"
+  }
+}

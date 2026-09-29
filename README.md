@@ -1,5 +1,7 @@
 # agent-dns
 
+<img src="brand/assets/bolt-gold.svg" width="48" alt="">
+
 `agent-dns/1` is a vendor-neutral way for a domain to say where its agents are described — one DNS TXT record at `_agent.<domain>` pointing at the domain's `agent/1` discovery document — for anyone building or consuming agents who needs to get from a domain name to an organisation, its agents and their capabilities without asking a directory first.
 
 DNS bootstrapped the web by turning a name into an address. `agent-dns/1` does the same for the agentic internet: the name is the domain, the address is one https URL, and everything else lives in the document that URL serves. The document format is a sibling specification, `agent/1`, and is not redefined here.
@@ -83,6 +85,19 @@ Sibling specifications, referenced by name and not redefined here:
 - `ritual/1` — the interaction contract an agent and a consumer settle on
 - `aao/0.1` — the organisation charter an `org/<slug>` in a record refers to
 - `delegation/1` — how authority is attenuated when one agent acts for another
+
+## Where it sits in the stack
+
+`agent-dns/1` is a gateway layer of Web 4 — the agentic internet as a stack of
+open protocols. The human map of the whole stack is
+[web4](https://github.com/FlashyLabs/web4); its machine twin is
+[stack.json](https://github.com/FlashyLabs/stack.json), served at
+`/.well-known/stack.json`. This repository serves its own institutional front
+door — the same config-driven, dependency-free door every protocol repository in
+the estate serves — generated into `site/` by `node scripts/build-site.mjs` from
+`site.config.json` and its vendored inputs. It is committed here and, once
+deployed, is served at `https://flashylabs.github.io/agent-dns/` (committed as
+of 2026-09-29, not yet fetched).
 
 ## Status
 
