@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SKIP = new Set(['.git', 'node_modules']);
 const LICENCE_LINE =
-  'Licence: to be declared at launch. The estate licence register in flashyos governs; this repository is not yet open-sourced.';
+  'Licensed under Apache-2.0 (holder Flashy Labs); the estate register in flashyos `tools/estate-licences.mjs` is the authority.';
 
 const failures = [];
 const fail = (msg) => failures.push(msg);
@@ -62,9 +62,16 @@ for (const field of ['dependencies', 'devDependencies', 'peerDependencies', 'opt
 }
 if (pkg.type !== 'module') fail('package.json: "type" must be "module"');
 
-// 5. The licence is declared once, elsewhere: no LICENSE file here, and the README says so in its last line.
-for (const name of ['LICENSE', 'LICENSE.md', 'LICENCE', 'LICENCE.md', 'LICENSE.txt']) {
-  if (existsSync(join(ROOT, name))) fail(`${name}: this repository does not declare its own licence`);
+// 5. The licence is Apache-2.0, holder Flashy Labs, per the estate register in
+//    flashyos. A LICENSE file carries the full text; the README's last line
+//    names the register as the authority.
+const licensePath = join(ROOT, 'LICENSE');
+if (!existsSync(licensePath)) {
+  fail('LICENSE: the repository must carry the Apache-2.0 licence text');
+} else {
+  const licence = readFileSync(licensePath, 'utf8');
+  if (!licence.includes('Apache License')) fail('LICENSE: must contain "Apache License"');
+  if (!licence.includes('Copyright 2026 Flashy Labs')) fail('LICENSE: must name "Copyright 2026 Flashy Labs"');
 }
 const readme = readFileSync(join(ROOT, 'README.md'), 'utf8').trimEnd().split('\n');
 if (readme[readme.length - 1] !== LICENCE_LINE) fail(`README.md: last line must be exactly: ${LICENCE_LINE}`);

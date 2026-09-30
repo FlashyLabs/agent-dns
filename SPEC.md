@@ -2,6 +2,8 @@
 
 Status: draft. Contract name: `agent-dns/1`.
 
+**The v1 grammar and reason codes are frozen.** The record grammar (§2.2), the four findings (§4) and the reason codes (§5) will not change under `agent-dns/1`; any change to them is `agent-dns/2`, never an edit to v1. This is the seam that lets a consumer vendor the resolver and the vectors and trust that a passing vector stays passing. What remains draft is this document's surrounding prose, not the wire contract.
+
 This document specifies how a domain publishes, and how a resolver finds, the location of the domain's `agent/1` discovery document using one DNS TXT record. It specifies the record grammar, the resolution algorithm, the four findings a resolver reports, what a resolver refuses, and what version 1 deliberately does not carry.
 
 The words MUST, MUST NOT, SHOULD and MAY are used in their RFC 2119 sense.

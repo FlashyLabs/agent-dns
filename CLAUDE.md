@@ -30,7 +30,7 @@ No install step exists and none is needed. `package.json` has no dependencies of
 - **Other versions are ignored, not refused.** A record whose first pair is `v=<not agent1>` is skipped; a record with no `v` at all is `invalid`. Both are vectors. This is the forward-compatibility seam; do not widen or narrow it casually.
 - **Vector file names say what they expect.** `valid-*` → `ok`, `absent-*` → `absent`, `invalid-*` → `invalid`. A test reads the prefix.
 - **The schema admits what the parser produces.** `schema/agent-dns-1.json` is draft 2020-12, `required: ["v","url"]`, `additionalProperties: false`, `x-*` via `patternProperties`. A test checks each valid vector's record against those rules.
-- **No dependencies, no LICENSE file, node: imports only, the README's last line is the estate licence line, no credential shapes.** `tools/lint.mjs` holds all of these; `npm run lint` is in CI. The resolver's one relative import is `./vendor-domain.mjs`, and a test asserts that file itself imports nothing — it must run in a pure module and a browser.
+- **No dependencies, the Apache-2.0 `LICENSE` present (holder Flashy Labs, per the estate register in flashyos `tools/estate-licences.mjs`), node: imports only, the README's last line is the estate licence line, no credential shapes.** `tools/lint.mjs` holds all of these; `npm run lint` is in CI. The resolver's one relative import is `./vendor-domain.mjs`, and a test asserts that file itself imports nothing — it must run in a pure module and a browser.
 - **No adoption claims.** The README test refuses "adopted by", "used by", "trusted by". Nothing here is deployed or measured, and the docs say so.
 
 ## House rules — true in every repository in this estate

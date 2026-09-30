@@ -17,7 +17,7 @@ const readme = readFileSync(join(ROOT, 'README.md'), 'utf8');
 // Every github.com/FlashyLabs/<name> the README may link. Add here first.
 const ALLOW = ['web4', 'stack.json', 'agent-dns'];
 const LICENCE_LINE =
-  'Licence: to be declared at launch. The estate licence register in flashyos governs; this repository is not yet open-sourced.';
+  'Licensed under Apache-2.0 (holder Flashy Labs); the estate register in flashyos `tools/estate-licences.mjs` is the authority.';
 
 test('the first line is a level-1 heading', () => {
   assert.match(readme, /^# \S.*\n/, 'the README must open with a level-1 heading');

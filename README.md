@@ -73,7 +73,7 @@ It exists because the estate had three implementations of "same domain" in speci
 | `vectors/` | Twenty test vectors, `{contract, domain, records, expect}` — five valid, two absent, thirteen invalid |
 | `test/agent-dns.test.mjs` | `node --test` suite: vectors, parser, validator, resolver with injected transports, CLI, repository rules |
 | `test/domain.test.mjs` | The same-domain rule pinned case by case: equal, subdomain, parent, sibling, `co.uk` neighbours, case, trailing dot, non-https, unparsable |
-| `tools/lint.mjs` | Zero-install lint: `node --check` on every `.mjs`, `node:`-only imports, no dependencies, no LICENSE file, licence line, credential shapes |
+| `tools/lint.mjs` | Zero-install lint: `node --check` on every `.mjs`, `node:`-only imports, no dependencies, the Apache-2.0 `LICENSE`, licence line, credential shapes |
 | `CLAUDE.md` | Working notes for agents and people: what is different here and which rules a test holds |
 
 ## Links
@@ -101,6 +101,8 @@ of 2026-09-29, not yet fetched).
 
 ## Status
 
-Status: draft. The contract is `agent-dns/1`. The grammar, algorithm and reason codes may change until the first independent implementation agrees with the vectors; until then nothing here is a standard.
+Status: draft. The contract is `agent-dns/1`. Nothing here is deployed, adopted or measured; the vectors and tests are the whole of the evidence.
 
-Licence: to be declared at launch. The estate licence register in flashyos governs; this repository is not yet open-sourced.
+**The v1 grammar and reason codes are frozen.** The record grammar (§2.2), the four findings (§4) and the reason codes (§5) of `agent-dns/1` will not change; a change to any of them is `agent-dns/2`, never an edit to v1. This is what lets a consumer vendor the resolver and the vectors and trust them. What remains draft is the surrounding prose, not the wire contract.
+
+Licensed under Apache-2.0 (holder Flashy Labs); the estate register in flashyos `tools/estate-licences.mjs` is the authority.

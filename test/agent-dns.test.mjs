@@ -1,6 +1,6 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { readdirSync, readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -533,9 +533,17 @@ describe('repository', () => {
   test('README ends on the estate licence line and never claims adoption', () => {
     const readme = readFileSync(join(ROOT, 'README.md'), 'utf8');
     const last = readme.trimEnd().split('\n').pop();
-    assert.equal(last, 'Licence: to be declared at launch. The estate licence register in flashyos governs; this repository is not yet open-sourced.');
+    assert.equal(last, 'Licensed under Apache-2.0 (holder Flashy Labs); the estate register in flashyos `tools/estate-licences.mjs` is the authority.');
     assert.match(readme, /Status: draft/);
     assert.doesNotMatch(readme, /\b(adopted by|used by|trusted by)\b/i);
+  });
+
+  test('the LICENSE carries the Apache-2.0 text with the estate copyright holder', () => {
+    const licensePath = join(ROOT, 'LICENSE');
+    assert.ok(existsSync(licensePath), 'LICENSE is missing — the estate register names this repository Apache-2.0');
+    const licence = readFileSync(licensePath, 'utf8');
+    assert.match(licence, /Apache License/, 'LICENSE must contain "Apache License"');
+    assert.match(licence, /Copyright 2026 Flashy Labs/, 'LICENSE must name "Copyright 2026 Flashy Labs"');
   });
 
   test('SPEC is a draft of agent-dns/1 and names the four findings', () => {
